@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"github.com/theabrahamaudu/zeep-lend/services/auth"
 	"github.com/theabrahamaudu/zeep-lend/types"
@@ -34,6 +35,16 @@ func (h *Handler) handleRegister(w http.ResponseWriter, r *http.Request) {
 		utils.WriteError(w, http.StatusBadRequest, err)
 	}
 
+	// validate payload
+	if err := utils.Validate.Struct(payload); err != nil {
+		errors := err.(validator.ValidationErrors)
+		utils.WriteError(
+			w,
+			http.StatusBadRequest,
+			fmt.Errorf("invalid payload %v", errors),
+		)
+		return
+	}
 
 	// check if user exists
 	_, err := h.store.GetUserByEmail(payload.Email)
