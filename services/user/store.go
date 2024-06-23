@@ -2,6 +2,7 @@ package user
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/theabrahamaudu/zeep-lend/types"
@@ -53,9 +54,40 @@ func scanRowIntoUser(rows *sql.Rows) (*types.User, error) {
 }
 
 func (s *Store) GetUserByID(id uuid.UUID) (*types.User, error) {
-	return nil, nil
+	rows, err := s.db.Query(
+		"SELECT * FROM users WHERE id = ?",
+		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+	
+	u := new(types.User)
+	for rows.Next() {
+		u, err = scanRowIntoUser(rows)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if u.ID == 0 {
+		return nil, fmt.Errorf("user not found")
+	}
+
+	return u, nil
 }
 
 func (s *Store) CreateUser(user types.User) error {
+	_, err := s.db.Exec(
+		`INSERT INTO users (firstName, lastName, email, password) 
+		VALUES (?,?,?,?)`,
+		user.FirstName,
+		user.LastName,
+		user.Email,
+		user.Password,
+	)
+	if err != nil {
+		return err
+	}
 	return nil
 }

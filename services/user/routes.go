@@ -49,7 +49,7 @@ func (h *Handler) handleRegister(w http.ResponseWriter, r *http.Request) {
 	// check if user exists
 	_, err := h.store.GetUserByEmail(payload.Email)
 	
-	if err == nil {
+	if err != nil {
 		utils.WriteError(w, http.StatusBadRequest, fmt.Errorf(
 			"user with email %s already exists", payload.Email,
 		))
