@@ -12,8 +12,24 @@ type UserStore interface {
 	CreateUser(User) error
 }
 
+type BookStore interface {
+	GetBooks() ([]Book, error)
+}
+
+type Book struct {
+	ID			int			`json:"id"`
+	UserID		int			`json:"userId"`
+	Name 		string		`json:"name"`
+	Description	string		`json:"description"`
+	Image		string		`json:"image"`
+	Fee			int			`json:"fee"`
+	Duration 	int			`json:"duration"`
+	Status  	int			`json:"status"`
+	CreatedAt	time.Time 	`json:"createdAt"`
+}
+
 type User struct {
-	ID			int	`json:"id"`
+	ID			int			`json:"id"`
 	FirstName	string		`json:"firstName"`
 	LastName	string		`json:"lastName"`
 	Email		string		`json:"email"`

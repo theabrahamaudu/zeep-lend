@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/theabrahamaudu/zeep-lend/services/book"
 	"github.com/theabrahamaudu/zeep-lend/services/user"
 )
 
@@ -28,6 +29,10 @@ func (s *APIServer) Run() error {
 	userStore := user.NewStore(s.db)
 	userHandler := user.NewHandler(userStore)
 	userHandler.RegisterRoutes(subrouter)
+
+	bookStore := book.NewStore(s.db)
+	bookHandler := book.NewHandler(bookStore)
+	bookHandler.RegisterRoutes(subrouter)
 
 	log.Println("Listening on", s.addr)
 

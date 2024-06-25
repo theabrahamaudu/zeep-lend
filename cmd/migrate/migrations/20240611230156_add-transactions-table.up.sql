@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (lenderId) REFERENCES users(`id`)
-    FOREIGN KEY (borrowerId) REFERENCES users(`id`)
+    FOREIGN KEY (lenderId) REFERENCES users(`id`),
+    FOREIGN KEY (borrowerId) REFERENCES users(`id`),
     FOREIGN KEY (bookId) REFERENCES books(`id`)
 );
