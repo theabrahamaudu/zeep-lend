@@ -10,5 +10,7 @@ CREATE TABLE IF NOT EXISTS books (
     `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (id),
+    UNIQUE KEY (name),
     FOREIGN KEY (userId) REFERENCES users(`id`)
+    
 );

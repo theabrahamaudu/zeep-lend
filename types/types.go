@@ -14,6 +14,8 @@ type UserStore interface {
 
 type BookStore interface {
 	GetBooks() ([]Book, error)
+	GetBookByName(name string) (*Book, error)
+	CreateBook(Book) error
 }
 
 type Book struct {
@@ -26,6 +28,16 @@ type Book struct {
 	Duration 	int			`json:"duration"`
 	Status  	int			`json:"status"`
 	CreatedAt	time.Time 	`json:"createdAt"`
+}
+
+type CreateBookPayload struct {
+	UserID		int			`json:"userId" validate:"required"`
+	Name 		string		`json:"name" validate:"required"`
+	Description	string		`json:"description" validate:"required"`
+	Image		string		`json:"image" validate:"required"`
+	Fee			int			`json:"fee" validate:"required"`
+	Duration 	int			`json:"duration" validate:"required"`
+	Status  	int			`json:"status" validate:"required"`
 }
 
 type User struct {

@@ -14,6 +14,26 @@ func NewStore(db *sql.DB) *Store {
 	return &Store{db: db}
 }
 
+func (s *Store) CreateBook(book types.Book) error {
+	_, err := s.db.Exec(
+		`INSERT INTO books (
+			userId, name, description, image, fee, duration, status
+		) 
+		VALUES (?,?,?,?,?,?,?)`,
+		book.UserID,
+		book.Name,
+		book.Description,
+		book.Image,
+		book.Fee,
+		book.Duration,
+		book.Status,
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (s *Store) GetBooks() ([]types.Book, error) {
 	rows, err := s.db.Query("SELECT * FROM books")
 
@@ -34,6 +54,24 @@ func (s *Store) GetBooks() ([]types.Book, error) {
 	}
 
 	return books, nil
+}
+
+func (s *Store) GetBookByName(name string) (*types.Book, error) {
+	rows, err := s.db.Query("SELECT * FROM books WHERE name = ?", name)
+
+	if err != nil {
+		return nil, err
+	}
+
+	b := new(types.Book)
+	for rows.Next() {
+		b, err = scanRowIntoBook(rows)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return b, nil
 }
 
 func scanRowIntoBook(rows *sql.Rows) (*types.Book, error) {
