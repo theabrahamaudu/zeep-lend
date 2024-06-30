@@ -74,6 +74,24 @@ func (s *Store) GetBookByName(name string) (*types.Book, error) {
 	return b, nil
 }
 
+func (s *Store) GetBookByID(id int) (*types.Book, error) {
+	rows, err := s.db.Query("SELECT * FROM books WHERE id = ?", id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	b := new(types.Book)
+	for rows.Next() {
+		b, err = scanRowIntoBook(rows)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return b, nil
+}
+
 func scanRowIntoBook(rows *sql.Rows) (*types.Book, error) {
 	book := new(types.Book)
 

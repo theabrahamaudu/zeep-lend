@@ -19,8 +19,8 @@ func NewHandler(store types.BookStore) *Handler {
 }
 
 func (h *Handler) RegisterRoutes(router *mux.Router) {
-	router.HandleFunc("/books", h.handleGetBook).Methods(http.MethodGet)
-	router.HandleFunc("/createbook", h.handleCreateBook).Methods(http.MethodPost)
+	router.HandleFunc("/books/all", h.handleGetBook).Methods(http.MethodGet)
+	router.HandleFunc("/books/createbook", h.handleCreateBook).Methods(http.MethodPost)
 }
 
 func (h *Handler) handleCreateBook(w http.ResponseWriter, r *http.Request) {

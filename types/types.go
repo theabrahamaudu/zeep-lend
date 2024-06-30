@@ -15,7 +15,35 @@ type UserStore interface {
 type BookStore interface {
 	GetBooks() ([]Book, error)
 	GetBookByName(name string) (*Book, error)
+	GetBookByID(id int) (*Book, error)
 	CreateBook(Book) error
+}
+
+type TransactionStore interface {
+	CreateTransaction(transaction CreateTransactionPayload) (int, error)
+	CloseTransaction(transaction CloseTransactionPayload) (int, error)
+}
+
+type Transaction struct {
+	ID			int		`json:"id"`
+	LenderID	int		`json:"lenderId"`
+	BorrowerID	int		`json:"borrowerId"`
+	BookID		int		`json:"bookId"`
+	Status		int		`json:"status"`
+	CreatedAt	int		`json:"createdAt"`
+}
+
+type CreateTransactionPayload struct {
+	LenderID	int		`json:"lenderId" validate:"required"`
+	BorrowerID	int		`json:"borrowerId" validate:"required"`
+	BookID		int		`json:"bookId" validate:"required"`
+	Status		int		`json:"status" validate:"required"`
+}
+
+type CloseTransactionPayload struct {
+	ID			int		`json:"id" validate:"required"`
+	LenderID	int		`json:"lenderId" validate:"required"`
+	BorrowerID	int		`json:"borrowerId" validate:"required"`
 }
 
 type Book struct {
