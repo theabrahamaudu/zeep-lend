@@ -24,3 +24,6 @@ go.work
 
 #database volume
 /db_data
+
+# Environment variables
+/.env
